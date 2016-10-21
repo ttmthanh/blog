@@ -1,19 +1,39 @@
-<p>
-  <strong>Title:</strong>
-  <%= @article.title %>
-</p>
+<%- model_class = Article -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
+  <dd><%= @article.title %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:text) %>:</strong></dt>
+  <dd><%= @article.text %></dd>
+</dl>
+
+<% @article.comments.each do |comment| %>
+  <p>
+    <strong>Commenter:</strong>
+    <%= comment.commenter %>
+  </p>
  
-<p>
-  <strong>Text:</strong>
-  <%= @article.text %>
-</p>
-
-
-<h2>Comments</h2>
-<%= render @article.comments %>
-
+  <p>
+    <strong>Comment:</strong>
+    <%= comment.body %>
+  </p>
+<% end %> 
 <h2>Add a comment:</h2>
-<%= render 'comments/form' %>
-
-<%= link_to 'Edit', edit_article_path(@article) %> |
-<%= link_to 'Back', welcome_index_path %>
+<%= form_for([@article, @article.comments.build]) do |f| %>
+  <p>
+    <%= f.label :commenter %><br>
+    <%= f.text_field :commenter %>
+  </p>
+  <p>
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              welcome_index_path, :class => 'btn btn-default'  %>
