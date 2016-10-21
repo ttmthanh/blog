@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'login/new'
+
   get 'welcome/index'
   resources :articles do
   	resources :comments
@@ -11,4 +13,6 @@ Rails.application.routes.draw do
 
   # list các a
   get 'articles' => 'articles#index'
+
+  
 end
